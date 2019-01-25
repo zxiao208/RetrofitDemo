@@ -29,7 +29,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class PostRequest extends AppCompatActivity {
 
-    Button btnreq;
+    Button btnreq,btnreq2;
     TextView textView;
 
     @Override
@@ -37,11 +37,19 @@ public class PostRequest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         btnreq = (Button) findViewById(R.id.btn_req);
+        btnreq2= (Button) findViewById(R.id.btn_req2);
         textView= (TextView) findViewById(R.id.rsp_content);
         btnreq.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 okpost();
+            }
+        });
+
+        btnreq2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                okpost2();
             }
         });
 
@@ -53,7 +61,7 @@ public class PostRequest extends AppCompatActivity {
         JsonObject jsonObject = new JsonObject();
 //        Map<String,Object> map = new TreeMap<>();
 //        map.put("name","张三");
-        jsonObject.addProperty("name","张三");
+        jsonObject.addProperty("name","sanmr");
         RequestBody requestBody = RequestBody.create(mediaType,jsonObject.toString());
         //1.创建OkHttpClient对象
         OkHttpClient okHttpClient =new OkHttpClient();
@@ -71,13 +79,47 @@ public class PostRequest extends AppCompatActivity {
                    runOnUiThread(new Runnable() {
                        @Override
                        public void run() {
-                           textView.setText(response.toString());
+                           try {
+                               textView.setText(response.body().string());
+                           } catch (IOException e) {
+                               e.printStackTrace();
+                           }
                        }
                    });
                 }
             });
     }
 
+    public void okpost2(){
+        MediaType mediaType = MediaType.parse("application/json; charset=utf-8");//"类型,字节码"
+        JsonObject jsonObject = new JsonObject();
+//        Map<String,Object> map = new TreeMap<>();
+//        map.put("name","张三");
+        jsonObject.addProperty("name","sanmr");
+        RequestBody requestBody = RequestBody.create(mediaType,jsonObject.toString());
+        //1.创建OkHttpClient对象
+        OkHttpClient okHttpClient =new OkHttpClient();
+        //2.创建Request对象，设置一个url地址,设置请求方式。
+        Request request = new Request.Builder().url("http://45.76.10.243:8080/ssmapp/paper/phone/slectallpaper").method("POST",requestBody).build();
+        okhttp3.Call call=okHttpClient.newCall(request);
+        call.enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.i("postFail",e.toString());
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, final okhttp3.Response response) throws IOException {
+               final String result= response.body().string();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                            textView.setText(result);
+                    }
+                });
+            }
+        });
+    }
     private Request.Builder getBuilder(){
         Request.Builder builder = new Request.Builder()
                 .addHeader("Connection", "keep-alive")

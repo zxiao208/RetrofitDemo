@@ -8,14 +8,34 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".GetRequest">
+
     <Button
         android:id="@+id/btn_req"
-        android:layout_alignBottom="@+id/rsp_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:id="@+id/rsp_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/rsp_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="18dp"
+        android:text="请求1"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/btn_req2"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="14dp"
+        android:layout_toEndOf="@+id/btn_req"
+        android:text="请求2"
+        android:textSize="20sp" />
+    <TextView
+        android:id="@+id/rsp_content"
+        android:layout_marginTop="200dp"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:textSize="25sp"
         android:text="Hello World!" />
 </RelativeLayout>
